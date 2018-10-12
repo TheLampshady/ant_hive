@@ -1,15 +1,11 @@
 #!/usr/bin/env python
-
 import json
-import random
+from my_hive import MyHive
 
 try:  # For python 3
     from http.server import BaseHTTPRequestHandler, HTTPServer
 except ImportError:  # For python 2
     from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-
-ACTIONS = ["move", "eat", "load", "unload"]
-DIRECTIONS = ["up", "down", "right", "left"]
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -23,15 +19,9 @@ class Handler(BaseHTTPRequestHandler):
         payload = self.rfile.read(int(self.headers['Content-Length']))
 
         # Hive object from request payload
-        hive = json.loads(payload)
+        hive = MyHive(json.loads(payload))
+        orders = hive.get_orders()
 
-        # Loop through ants and give orders
-        orders = {}
-        for ant in hive['ants']:
-            orders[ant] = {
-                "act": ACTIONS[random.randint(0, 3)],
-                "dir": DIRECTIONS[random.randint(0, 3)]
-            }
         response = json.dumps(orders)
         print(response)
 
@@ -53,4 +43,5 @@ def run():
     httpd.serve_forever()
 
 
-run()
+if __name__ == "__main__":
+    run()
