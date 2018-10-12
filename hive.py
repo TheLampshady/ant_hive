@@ -11,16 +11,30 @@ class BaseHive(object):
             :properties: 'ants' | Dict of ants and stats
             :properties: 'map' | Dict of board objects
         """
-        self.board = board
         self.id = board.get('id')
-        if not self.id:
-            raise LookupError("No Game ID")
-
         self.map = board.get('map')
         if not self.map:
             raise LookupError("No Game Map")
 
         self.ants = board.get('ants') or {}
+
+        self.width = self.map.get("width")
+        self.height = self.map.get("height")
+        self.board = self.map.get("cells")
+        self._validate()
+
+    def _validate(self):
+        if not self.id:
+            raise LookupError("No Game ID")
+        if not self.width or not self.height:
+            raise ValueError("Board requires spaces")
+
+        if self.height != len(self.board):
+            raise ValueError("Board height doesnt match")
+
+        for row in self.board:
+            if self.width != len(row):
+                raise ValueError("Board width doesnt match")
 
     @classmethod
     def process(cls, game_state):

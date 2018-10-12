@@ -23,7 +23,8 @@
   "map": {
     "width": 3,
     "height": 3,
-    "cells": [
+    "cells":
+    [
       [
         {
           "ant": "spanID",
