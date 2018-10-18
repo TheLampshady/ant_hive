@@ -1,6 +1,14 @@
 from numbers import Number
 
 
+def validate(func):
+    def wrapper(*args, **kwargs):
+        if not isinstance(args[1], Point):
+            raise ValueError("Invalid type: '%s'" % str(type(args[0])))
+        return func(*args, **kwargs)
+    return wrapper
+
+
 class Point(object):
 
     def __init__(self, x, y):
@@ -21,13 +29,16 @@ class Point(object):
             return Point(self.x + other, self.y + other)
         raise ValueError("Invalid type: '%s'" % str(type(other)))
 
+    @validate
     def distance(self, other):
-        if isinstance(other, Point):
-            p = self - other
-            return abs(p.x) + abs(p.y)
-        raise ValueError("Invalid type: '%s'" % str(type(other)))
+        p = self - other
+        return abs(p.x) + abs(p.y)
 
+    @validate
+    def closer(self, other):
+        p = self - other
+        return abs(p.x) + abs(p.y)
+
+    @validate
     def __eq__(self, other):
-        if isinstance(other, Point):
-            return self.x == other.x and self.y == other.y
-        return False
+        return self.x == other.x and self.y == other.y

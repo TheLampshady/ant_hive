@@ -1,6 +1,8 @@
 import random
 
 from hive import BaseHive
+from .ant import Ant
+from .food import Food
 from .tools import Point
 
 # ACTIONS = ["move", "eat", "load", "unload"]
@@ -14,6 +16,8 @@ class MyHive(BaseHive):
         self.hives = []
         self.foods = []
         self.all_ants = []
+        self.my_ants = [Ant(key, value) for key, value in self.ants.items()]
+        self._load_board()
 
     def get_orders(self):
         return self.random()
@@ -28,10 +32,10 @@ class MyHive(BaseHive):
             for ant in self.ants
         }
 
-    def hunt(self):
+    def hunter(self, hunt_ants):
         pass
 
-    def _get_items(self, item):
+    def _load_board(self):
         for i in range(self.height):
             for j in range(self.width):
                 if self.board[i][j]:
@@ -43,7 +47,9 @@ class MyHive(BaseHive):
                 self.hives.append(point)
 
         if "food" in cell:
-            self.foods.append((point, cell['food']))
+            self.foods.append(
+                Food(len(self.foods)+1, point, cell['food'])
+            )
 
         if "ant" in cell:
             self.all_ants.append(point)

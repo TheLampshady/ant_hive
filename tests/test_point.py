@@ -27,3 +27,7 @@ class TestPoint(BaseTest):
         p = Point(0, 1)
         x = p.distance(Point(2, 3))
         self.assertEqual(4, x)
+
+    def test_point_distance_invalid(self):
+        p = Point(0, 1)
+        self.assertRaises(ValueError, p.distance, 1)
