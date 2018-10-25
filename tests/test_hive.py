@@ -45,3 +45,9 @@ class TestHive(BaseTest):
             i = points.index(p)
             self.assertTrue(i >= 0)
             self.assertEqual(f, hive.foods[i].value)
+
+    def test_hive_makes_move(self):
+        payload = self.load_json("15x15.json")
+        hive = MyHive(payload)
+        result = hive.get_orders()
+        self.assertTrue(result)

@@ -36,4 +36,5 @@ class TestAnt(BaseTest):
         ant = Ant(1)
         ant.loc = Point(0, 0)
         i = ant.pick_food(foods)
-        self.assertEqual(0, i)
+        self.assertEqual(0, i[0])
+        self.assertEqual(2.0, i[1])

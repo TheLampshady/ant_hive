@@ -4,7 +4,7 @@ from numbers import Number
 def validate(func):
     def wrapper(*args, **kwargs):
         if not isinstance(args[1], Point):
-            raise ValueError("Invalid type: '%s'" % str(type(args[0])))
+            raise ValueError("Invalid type: '%s'" % str(type(args[1])))
         return func(*args, **kwargs)
     return wrapper
 
@@ -35,9 +35,48 @@ class Point(object):
         return abs(p.x) + abs(p.y)
 
     @validate
-    def closer(self, other):
-        p = self - other
-        return abs(p.x) + abs(p.y)
+    def steps(self, other):
+        if self == other:
+            return []
+        result = []
+        mod_x = self._get_step(other.x, self.x)
+        mod_y = self._get_step(other.y, self.y)
+
+        # Forward
+        if mod_x:
+            result.append(Point(self.x + mod_x, self.y))
+        if mod_y:
+            result.append(Point(self.x, self.y + mod_y))
+
+        # Sideways
+        if not mod_x:
+            result.append(Point(self.x + 1, self.y))
+            result.append(Point(self.x - 1, self.y))
+
+        if not mod_y:
+            result.append(Point(self.x, self.y + 1))
+            result.append(Point(self.x, self.y - 1))
+
+        # Backwards
+        if mod_x:
+            result.append(Point(self.x - mod_x, self.y))
+        if mod_y:
+            result.append(Point(self.x, self.y - mod_y))
+        return result
+
+    @validate
+    def get_move_name(self, other):
+        if self == other:
+            return None
+        if self.x != other.x:
+            return "LEFT" if self.x > other.x else "RIGHT"
+        return "UP" if self.x > other.x else "DOWN"
+
+    @staticmethod
+    def _get_step(x, y):
+        if x == y:
+            return 0
+        return 1 if x > y else -1
 
     @validate
     def __eq__(self, other):

@@ -31,3 +31,10 @@ class TestPoint(BaseTest):
     def test_point_distance_invalid(self):
         p = Point(0, 1)
         self.assertRaises(ValueError, p.distance, 1)
+
+    def test_point_steps(self):
+        p1 = Point(0, 0)
+        p2 = Point(1, 1)
+
+        self.assertIn(Point(1, 0), p1.steps(p2))
+        self.assertIn(Point(0, 1), p1.steps(p2))

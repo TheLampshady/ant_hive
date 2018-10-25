@@ -21,6 +21,10 @@ class Ant(object):
         y = props.get('y', 0)
         return Point(int(x), int(y))
 
+    @property
+    def has_food(self):
+        return bool(self.payload)
+
     def move(self, action):
         pass
 
@@ -28,9 +32,18 @@ class Ant(object):
         return food.value / self.loc.distance(food.loc)
 
     def pick_food(self, foods):
+        if not foods:
+            return None, None
         scores = [
             (i, self.food_score(food))
             for i, food in enumerate(foods or [])
         ]
-        return max(scores, key=lambda x: x[1])[0]
+        return max(scores, key=lambda x: x[1])
+
+    def pick_hive(self, hives):
+        scores = [
+            (hive, self.loc.distance(hive))
+            for hive in hives or []
+        ]
+        return min(scores, key=lambda x: x[1])[0]
 
