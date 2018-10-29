@@ -46,4 +46,3 @@ class Ant(object):
             for hive in hives or []
         ]
         return min(scores, key=lambda x: x[1])[0]
-

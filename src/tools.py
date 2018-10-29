@@ -64,13 +64,21 @@ class Point(object):
             result.append(Point(self.x, self.y - mod_y))
         return result
 
-    @validate
     def get_move_name(self, other):
         if self == other:
             return None
         if self.x != other.x:
             return "LEFT" if self.x > other.x else "RIGHT"
         return "UP" if self.x > other.x else "DOWN"
+
+    @validate
+    def is_between(self, other):
+        """
+        Is point between other and 0,0
+        :param other: Point
+        :rtype: Boolean
+        """
+        return 0 <= self.x < other.x and 0 <= self.y < other.y
 
     @staticmethod
     def _get_step(x, y):

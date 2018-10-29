@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import json
-from my_hive import MyHive
+from src.my_hive import MyHive
 
 try:  # For python 3
     from http.server import BaseHTTPRequestHandler, HTTPServer

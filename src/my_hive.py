@@ -127,15 +127,9 @@ class MyHive(BaseHive):
                 dir=ant.loc.get_move_name(move)
             )
 
-    @staticmethod
-    def get_empty(locs, occupied):
+    def get_empty(self, locs, occupied):
         for loc in locs:
             if loc not in occupied:
-                # TODO get boarders
-                return loc
+                if loc.is_between(Point(self.width, self.height)):
+                    return loc
         return []
-
-
-
-
-
